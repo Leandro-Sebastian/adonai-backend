@@ -1,13 +1,16 @@
-import mercadopago from 'mercadopago';
+const mercadopago = require('mercadopago');
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).send('Solo POST');
+// Configura tu token personal
+mercadopago.configure({
+  access_token: 'TU_ACCESS_TOKEN_AQUÍ', // ⚠️ No subas esto público
+});
+
+async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).send('Método no permitido');
+  }
 
   const { nombre, servicio, fecha, hora } = req.body;
-
-  mercadopago.configure({
-    access_token: 'APP_USR-2551654686545169-062021-b088ba2ac1066337b334537b890e1012-293204491',
-  });
 
   try {
     const preference = {
@@ -19,18 +22,22 @@ export default async function handler(req, res) {
           unit_price: 5000,
         },
       ],
-      payer: { name: nombre },
+      payer: {
+        name: nombre,
+      },
       back_urls: {
-        success: 'https://adonai-backend.onrender.com/success.html',
-        failure: 'https://adonai-backend.onrender.com/failure.html',
-        pending: 'https://adonai-backend.onrender.com/pending.html',
+        success: 'https://tusitio.com/success.html',
+        failure: 'https://tusitio.com/failure.html',
+        pending: 'https://tusitio.com/pending.html',
       },
       auto_return: 'approved',
     };
 
     const response = await mercadopago.preferences.create(preference);
     res.status(200).json({ init_point: response.body.init_point });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 }
+
+module.exports = handler;
