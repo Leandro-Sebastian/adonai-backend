@@ -2,7 +2,7 @@ const mercadopago = require('mercadopago');
 
 // Configura tu token personal
 mercadopago.configure({
-  access_token: 'TU_ACCESS_TOKEN_AQUÍ', // ⚠️ No subas esto público
+ access_token: process.env.ACCESS_TOKEN
 });
 
 async function handler(req, res) {
