@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const crearPreferencia = require('./api/crearpreferencia.js'); // Importa bien la función
+const crearPreferencia = require('./api/crear-preferencia.js'); // Importa bien la función
 const port = process.env.PORT || 3000;
 
 app.use(cors());
